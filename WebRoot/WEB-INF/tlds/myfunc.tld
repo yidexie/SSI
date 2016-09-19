@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+	version="2.0">
+	<tlib-version>1.0</tlib-version>
+	<!--   
+		<short-name>myfunc</short-name>   
+	-->
+	<!--    <function>   -->
+	<!--        <description>title</description> 对这个EL方法的描述     -->
+	<!--        <name>title</name> 调用EL方法的名称    -->
+	<!--        <function-class>com.weixin.core.util.MyFunction</function-class>   -->
+	<!--        <function-signature>   -->
+	<!--            java.lang.String title(java.lang.String,java.lang.String)   -->
+	<!--        </function-signature>   -->
+	<!--        <example>${myfunc:title(str1,str2)}</example> 例如    -->
+	<!--    </function> -->
+
+	<short-name>mytaglib</short-name>
+	<uri>http://weixin.com.cn/mytag</uri>
+	<tag>
+		<name>getValidString</name>
+		<tag-class>com.weixin.tag.GetValidString</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>string</name>
+			<required>true</required>
+			<fragment>true</fragment>
+		</attribute>
+		<attribute>
+			<name>length</name>
+			<required>true</required>
+			<fragment>true</fragment>
+		</attribute>
+	</tag>
+	<tag>
+		<name>getNoHtmlValidString</name>
+		<tag-class>com.weixin.tag.GetNoHtmlValidString</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>string</name>
+			<required>true</required>
+			<fragment>true</fragment>
+		</attribute>
+		<attribute>
+			<name>length</name>
+			<required>true</required>
+			<fragment>true</fragment>
+		</attribute>
+	</tag>
+	<tag>
+		<name>getValidTime</name>
+		<tag-class>com.weixin.tag.GetValidTime</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>time</name>
+			<required>true</required>
+			<fragment>true</fragment>
+		</attribute>
+	</tag>
+	<tag>
+		<name>changeSpecialSign</name>
+		<tag-class>com.weixin.tag.ChangeSpecialSign</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>string</name>
+			<required>true</required>
+			<fragment>true</fragment>
+		</attribute>
+	</tag>
+	<tag>
+		<name>isIdIndexOf</name>
+		<tag-class>com.weixin.tag.IsIdIndexOf</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>idSeq</name>
+			<required>true</required>
+			<fragment>true</fragment>
+		</attribute>
+		<attribute>
+			<name>id</name>
+			<required>true</required>
+			<fragment>true</fragment>
+		</attribute>
+	</tag>
+	<tag>
+		<name>base64Decode</name>
+		<tag-class>com.weixin.tag.Base64Decode</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>string</name>
+			<required>true</required>
+			<fragment>true</fragment>
+		</attribute>
+	</tag>
+</taglib>

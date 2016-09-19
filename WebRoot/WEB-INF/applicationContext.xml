@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 指定Spring配置文件的Schema信息 -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop-2.5.xsd  
+	"
+	default-autowire="byName">
+
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location">
+			<value>classpath:database.properties</value>
+		</property>
+	</bean>
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driver}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.user}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="maxActive" value="100" />
+		<property name="maxIdle" value="50" />
+		<property name="minIdle" value="20" />
+	</bean>
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource">
+			<ref local="dataSource" />
+		</property>
+	</bean>
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="get*" />
+			<tx:method name="find*" />
+			<tx:method name="save*" />
+			<tx:method name="update*" />
+			<tx:method name="edit*" />
+			<tx:method name="delete*" />
+		</tx:attributes>
+	</tx:advice>
+	<aop:config>
+		<aop:pointcut id="allManagerMethod"
+			expression="execution(* com.weixin.*.service.impl.*.*(..))" />
+		<aop:advisor advice-ref="txAdvice"
+			pointcut-ref="allManagerMethod" />
+	</aop:config>
+
+
+	<!-- 配置Ibatis中的SqlMapClient -->
+	<bean id="sqlMapClient"
+		class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="configLocation">
+			<value>classpath:SqlMapConfig.xml</value>
+		</property>
+		<property name="dataSource">
+			<ref local="dataSource" />
+		</property>
+	</bean>
+
+	<!-- 扩展iBatis查询使之支持数据库分页查数据 
+		<bean id="dia" class="com.weixin.core.dao.dialect.SqlServerDialect">
+		</bean>
+		
+		<bean id="sqlExecutor" class="com.weixin.core.dao.ibatis.LimitSqlExecutor">
+		<property name="dialect">
+		<ref local="dia" />
+		</property>
+		</bean>
+	-->
+	<!-- baseDAO  -->
+	<bean id="baseDao" class="com.weixin.core.dao.impl.BaseDaoImpl">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="sqlMapClient">
+			<ref bean="sqlMapClient" />
+		</property>
+		<!--   <property name="sqlExecutor">  
+			<ref bean="sqlExecutor" />  
+			</property>   -->
+	</bean>
+
+	<!--  
+		<bean id="baseDao" class="com.weixin.core.dao.impl.BaseDaoImpl">
+		<property name="sqlMapClient">
+		<ref local="sqlMapClient" />
+		</property>
+		</bean>
+	-->
+	<!-- Base Service -->
+	<bean id="baseService"
+		class="com.weixin.core.service.impl.BaseServiceImpl">
+		<property name="baseDao">
+			<ref local="baseDao" />
+		</property>
+	</bean>
+
+	<!-- 定义业务服务 -->
+	<bean id="sysService"
+		class="com.weixin.sys.service.impl.SysServiceImpl">
+		<property name="baseDao">
+			<ref local="baseDao" />
+		</property>
+	</bean>
+
+	<bean id="springUtils"
+		class="com.weixin.core.util.SpringContextUtils" />
+
+</beans>
