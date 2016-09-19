@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap                                                                                                                            
+PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"                                                                                                 
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="AdminUser">
+	<typeAlias alias="adminUser" type="com.weixin.sys.pojo.AdminUser" />
+	<select id="getUserByloginAndPassword" parameterClass="adminUser"
+		resultClass="adminUser">
+		select * from AdminUser where UserName=#username# and
+		password=#password#
+	</select>
+
+	<select id="getUserById" parameterClass="java.lang.Long"
+		resultClass="adminUser">
+		select * from AdminUser where id = #id#
+	</select>
+
+	<delete id="deleteByID" parameterClass="java.lang.Long">
+		delete from AdminUser where id = #id#
+	</delete>
+	
+	<delete id="deleteByIDS" parameterClass="java.lang.String">
+		delete from AdminUser where id in ($id$)
+	</delete>
+
+	<insert id="addUser" parameterClass="adminUser">
+		insert into
+		AdminUser(username,password,name,privilege,valid,createTime,updateTime)
+		values(#username#,#password#,#name#,#privilege#,#valid#,#createTime#,#updateTime#)
+	</insert>
+	
+	<!--
+	sql 标签进行代码的复用
+	-->
+	<sql id="includeComplex">
+		<dynamic>
+			<isNotEmpty prepend="and" property="username">
+				<![CDATA[username like '%$username$%']]>
+			</isNotEmpty>
+		</dynamic>
+	</sql>
+	<!--
+	如果文本包含了很多的"< "字符和"&"字符——就象程序代码一样，那么最好把他们都放到CDATA部件中。
+	-->
+	<select id="getTotalCount" resultClass="java.lang.Integer"
+		parameterClass="adminUser">
+		select count(1) from AdminUser where 1=1
+		<include refid="includeComplex" />
+	</select>
+	
+	<select id="getPageList" resultClass="adminUser"
+		parameterClass="adminUser">
+		select * from AdminUser where 1=1
+		<include refid="includeComplex" />
+		order by updateTime desc
+	</select>
+
+	<update id="editUser" parameterClass="adminUser">
+		update AdminUser set username=#username#,
+		<dynamic>
+			<isNotEmpty property="password" prepend="">
+				password=#password#,
+			</isNotEmpty>
+		</dynamic>
+		name=#name#,privilege=#privilege#,valid=#valid#,updateTime=#updateTime#
+		where id =#id#
+	</update>
+
+
+	<update id="editPass" parameterClass="adminUser">
+		update AdminUser set Password=#newPassword# where id=#id#
+	</update>
+
+	<select id="getListByIds" resultClass="adminUser"
+		parameterClass="java.lang.String">
+		select * from AdminUser where id in ($ids$)
+	</select>
+
+</sqlMap>

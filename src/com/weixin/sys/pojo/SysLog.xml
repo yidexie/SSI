@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap                                                                                                                            
+PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"                                                                                                 
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="SysLog">
+	<typeAlias alias="sysLog" type="com.weixin.sys.pojo.SysLog" />
+	<sql id="includeComplex">
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="remark">
+				<![CDATA[remark like '%$remark$%']]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="userid">
+				userid =#userid#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="ip">
+				<![CDATA[ip like '%$ip$%']]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="timeStart">
+				<![CDATA[systime>=#timeStart#]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="timeEnd">
+				<![CDATA[systime<=#timeEnd#]]>
+			</isNotEmpty>
+			<isNotEqual prepend="and" property="type"
+				compareValue="0">
+				type=#type#
+			</isNotEqual>
+		</dynamic>
+	</sql>
+
+	<insert id="addSysLog" parameterClass="sysLog">
+		insert into sys_log(type,userid,remark,ip,systime)
+		values(#type#,#userid#,#remark#,#ip#,#systime#)
+	</insert>
+	<select id="getTotalCount" resultClass="java.lang.Integer"
+		parameterClass="sysLog">
+		select count(1) from sys_log
+		<include refid="includeComplex" />
+	</select>
+	<select id="getPageList" resultClass="SysLog"
+		parameterClass="sysLog">
+		select a.*,b.username from (select * from sys_log
+		<include refid="includeComplex" />
+		) a left outer join adminUser b on a.userid=b.id order by a.id
+		desc
+	</select>
+
+	<delete id="deleteByID" parameterClass="java.lang.Object">
+		delete from sys_log where id in ($idStr$)
+	</delete>
+
+</sqlMap>
+

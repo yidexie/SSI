@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig
+PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-config-2.dtd">
+<sqlMapConfig>
+	<settings cacheModelsEnabled="true" lazyLoadingEnabled="true"
+		enhancementEnabled="true" errorTracingEnabled="true"
+		useStatementNamespaces="true" maxRequests="512" maxSessions="128"
+		maxTransactions="32" />
+	<sqlMap resource="com/weixin/sys/pojo/AdminUser.xml" />
+	<sqlMap resource="com/weixin/sys/pojo/SysLog.xml" />
+</sqlMapConfig>

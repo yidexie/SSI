@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns:review xmlns:ns="http://reviewclipse.org/model/xml">
+  <period startDate="2013-06-05T14:09:13.398+08:00">
+    <assignment>
+      <author>wangfp</author>
+      <reviewer>lizw</reviewer>
+      <filter xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+    </assignment>
+    <assignment>
+      <author>wanghc</author>
+      <reviewer>lizw</reviewer>
+      <filter xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+    </assignment>
+    <assignment>
+      <author>xiezl</author>
+      <reviewer>lizw</reviewer>
+      <filter xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+    </assignment>
+    <assignment>
+      <author>yanghh</author>
+      <reviewer>lizw</reviewer>
+      <filter xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+    </assignment>
+  </period>
+  <user name="xiezl"/>
+  <user name="yanghh"/>
+  <user name="wanghc"/>
+  <user name="wangfp"/>
+  <user name="lizw"/>
+</ns:review>

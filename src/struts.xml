@@ -1,0 +1,71 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<constant name="struts.objectFactory.spring.autoWire.alwaysRespect"
+		value="true" />
+	<constant name="struts.objectFactory" value="spring" />
+	<constant name="struts.ui.theme" value="simple" />
+	<constant name="struts.convention.default.parent.package"
+		value="app-default" />
+	<constant name="struts.devMode" value="false" />
+	<constant name="struts.convention.package.locators" value="weixin" />
+	<constant name="struts.convention.action.name.separator" value="-" />
+	<constant name="struts.convention.exclude.packages"
+		value="com.weixin.core.actions.*" />
+	<constant name="struts.ognl.allowStaticMethodAccess" value="true" />
+	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
+	<constant name="struts.i18n.encoding" value="UTF-8" />
+	<constant name="struts.multipart.saveDir" value="/temp"></constant>
+	<!-- common-fileupload上传文件文件大小限制 -->
+	<constant name="struts.multipart.maxSize" value="5242880" />
+
+	<!-- 将json整合到默认包中，是为了实现ajax需求，简化配置，另外，系统默认包是有权限验证的，但是可以覆盖拦截器实现其他拦截器需求 -->
+	<package name="app-default" extends="convention-default">
+
+		<result-types>
+			<result-type name="json"
+				class="com.googlecode.jsonplugin.JSONResult" />
+		</result-types>
+		<interceptors>
+			<interceptor name="authorityInterceptor"
+				class="com.weixin.interceptor.AuthorityInterceptor" />
+			<interceptor name="json"
+				class="com.googlecode.jsonplugin.JSONInterceptor" />
+			<interceptor name="exceptionInterceptor"
+				class="com.weixin.interceptor.ExceptionInterceptor" />
+			<interceptor-stack name="appStack">
+				<interceptor-ref name="authorityInterceptor"></interceptor-ref>
+				<interceptor-ref name="exceptionInterceptor"></interceptor-ref>
+				<interceptor-ref name="json"></interceptor-ref>
+				<interceptor-ref name="paramsPrepareParamsStack"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="appStack"></default-interceptor-ref>
+
+
+		<global-results>
+			<result name="json" type="json" />
+			<result name="login">/login.jsp</result>
+			<result name="index">/index.jsp</result>
+
+			<result name="error">/error.jsp</result>
+
+			<result name="sessionOutTime">/sessionOutTime.jsp</result>
+
+			<result name="success">/success.jsp</result>
+
+		</global-results>
+
+		<global-exception-mappings>
+			<exception-mapping result="error"
+				exception="java.lang.Exception">
+			</exception-mapping>
+		</global-exception-mappings>
+
+
+
+	</package>
+
+
+</struts>
